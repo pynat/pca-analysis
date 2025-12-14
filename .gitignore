@@ -1,0 +1,25 @@
+# mac
+.DS_Store
+
+# jupyter
+.ipynb_checkpoints/
+
+# python
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.env
+.venv
+env/
+venv/
+
+# vs
+.vscode/
+
+# other
+*.log
+.csv
