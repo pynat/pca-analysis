@@ -513,12 +513,15 @@ Variance retained:      95.01%
 git clone https://github.com/yourusername/pca-portfolio-analysis.git
 cd pca-portfolio-analysis
 
-# Create virtual environment (optional but recommended)
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+# Create conda environment from environment.yml
+conda env create -f environment.yml
 
-# Install dependencies
-pip install -r requirements.txt
+# Activate the environment
+conda activate ds_env
+
+# (Optional) Register the environment as a Jupyter kernel
+python -m ipykernel install --user --name ds_env --display-name "Python (ds_env)"
+
 ```
 
 ---

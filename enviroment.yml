@@ -1,0 +1,15 @@
+name: ds_env
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - matplotlib=3.10.0
+  - numpy=1.26.4
+  - pandas=2.2.3
+  - requests=2.32.3
+  - seaborn=0.13.2
+  - scikit-learn=1.5.1
+  - jupyter=1.1.1
+  - pip
+  - pip:
+      - yfinance==0.2.66
