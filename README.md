@@ -3,253 +3,7 @@
 This project demonstrates how to apply **Principal Component Analysis (PCA)** to S&P 500 stock returns to extract the main factors driving market movements and reduce dimensionality for portfolio analysis.
 
 ---
-
-## PCA Results
-
-### Variance Explained
-
-PCA was fitted with 252 components. The analysis reveals a **dominant first component** capturing nearly one-third of total variance, followed by rapidly declining contributions from subsequent components.
-
-![Scree Plot](results/pca_scree_plot.png)
-
-**Top 3 Components:**
-- **PC1:** 30.24% (market factor)
-- **PC2:** 6.39% (sector rotation)  
-- **PC3:** 5.13% (energy exposure)
-
-**Key Observations:**
-- **Dominant first component:** PC1 explains 30.2% of variance—nearly one-third of all variation
-- **Rapid variance decay:** Steep decline after PC1 (30.2% → 6.4% → 5.1%)
-- **Top 3 components:** Together explain ~42% of total variance
-- **Long tail:** Remaining 249 components account for the other 58%, indicating diverse patterns
-
----
-
-### Eigenvalue Analysis
-
-![Eigenvalue Distribution](results/eigenvalue_distribution.png)
-
-**Eigenvalue Statistics:**
-
-| Metric | Value |
-|--------|-------|
-| **Total eigenvalues** | 252 |
-| **Largest (λ₁)** | 149.09 |
-| **Smallest (λ₂₅₂)** | ~0 |
-| **Max/Min ratio** | 5.07 × 10³³ |
-
-**Top 10 Eigenvalues:**
-
-| Component | Eigenvalue | Variance Explained | Cumulative |
-|-----------|------------|-------------------|------------|
-| PC1 | 149.09 | 30.24% | 30.24% |
-| PC2 | 31.50 | 6.39% | 36.63% |
-| PC3 | 25.28 | 5.13% | 41.76% |
-| PC4 | 11.95 | 2.42% | 44.19% |
-| PC5 | 9.92 | 2.01% | 46.20% |
-| PC6 | 9.46 | 1.92% | 48.12% |
-| PC7 | 8.21 | 1.67% | 49.78% |
-| PC8 | 6.84 | 1.39% | 51.17% |
-| PC9 | 6.62 | 1.34% | 52.52% |
-| PC10 | 5.59 | 1.13% | 53.65% |
-
-**Key Insights:**
-- **Absolute dominance:** PC1's eigenvalue (149.09) is ~5× larger than PC2 (31.50)
-- **Extreme ratio:** Max/min ratio indicates near-zero variance in some dimensions (redundant features)
-- **Top 10 components:** Collectively explain ~54% of variance
-- **Even distribution:** After PC1, relatively consistent decay (1-6% each) suggests multiple independent patterns
-- **No clear elbow:** Continuous exponential decline without sudden plateau
-
-**Left panel (linear scale):** Shows absolute dominance of first eigenvalue  
-**Right panel (log scale):** Reveals continuous decay pattern across all components
-
----
-
-### Component Loadings
-
-![Eigenvector Loadings](results/pca_eigenvector_loadings.png)
-
-**Pattern Analysis:**
-
-| Component | Pattern | Interpretation |
-|-----------|---------|----------------|
-| **PC1** (30.2%) | All positive loadings (~0.03-0.06) | Market factor—all stocks move together |
-| **PC2** (6.4%) | Mixed signs with clear extremes | Stock differentiation—contrasts between sectors |
-| **PC3** (5.1%) | Sparse with both signs | Independent contrast pattern—industry groups |
-
-**What This Means:**
-- **PC1** tells us: "The market went up or down"
-- **PC2 & PC3** tell us: "Which stocks outperformed vs. underperformed"
-- These contrasts reveal **diversification opportunities** within the market
-
----
-
-### Factor Interpretation
-
-![Component Loadings - Top 20 Stocks](results/component_loadings_20stocks.png)
-*Heatmap showing how the 20 stocks with highest PC1 loadings contribute to the first 5 components*
-
-#### PC1: Market Factor (30.24%)
-
-**Top Contributors (All Positive):**
-
-| Stock | Sector | Loading | Interpretation |
-|-------|--------|---------|----------------|
-| BLK | Financials | 0.0680 | BlackRock (asset management) |
-| AMP | Financials | 0.0666 | Ameriprise (wealth management) |
-| DOV | Industrials | 0.0663 | Dover Corporation |
-| ITW | Industrials | 0.0650 | Illinois Tool Works |
-| MCO | Financials | 0.0633 | Moody's (credit ratings) |
-| GS | Financials | 0.0633 | Goldman Sachs |
-
-**Least Contributors (Still Positive):**
-
-| Stock | Sector | Loading |
-|-------|--------|---------|
-| CPB | Consumer Staples | 0.0157 |
-| MOH | Healthcare | 0.0156 |
-| UNH | Healthcare | 0.0148 |
-| DG | Consumer Discretionary | 0.0134 |
-| GIS | Consumer Staples | 0.0132 |
-
-**Interpretation:**
-- **Systematic market risk** captured by PC1 affects all stocks
-- **Cyclical/financial stocks** most sensitive to broad market movements
-- **Defensive sectors** (consumer staples, healthcare) least sensitive but still positive
-- **Cannot be diversified away** within S&P 500—represents unavoidable market beta
-
----
-
-#### PC2: Sector Rotation (6.39%)
-
-**Positive Contributors (Utilities):**
-
-| Stock | Loading | Company |
-|-------|---------|---------|
-| ED | +0.134 | Consolidated Edison |
-| DUK | +0.131 | Duke Energy |
-| SO | +0.127 | Southern Company |
-| WEC | +0.125 | WEC Energy |
-| CMS | +0.122 | CMS Energy |
-
-**Negative Contributors (Semiconductors/Tech):**
-
-| Stock | Loading | Company |
-|-------|---------|---------|
-| LRCX | -0.083 | Lam Research |
-| KLAC | -0.081 | KLA Corporation |
-| AMAT | -0.080 | Applied Materials |
-| NVDA | -0.080 | Nvidia |
-| CDNS | -0.079 | Cadence Design |
-| CRWD | -0.075 | CrowdStrike |
-
-**Interpretation:**
-- **Classic defensive vs. growth rotation**
-- **Risk-off periods:** Utilities outperform (positive PC2), semiconductors lag
-- **Risk-on periods:** Tech/semiconductors rally (negative PC2), utilities lag
-- Represents **investor sentiment shifts** between safety and growth
-
-**Portfolio Strategy:**
-- To reduce PC2 exposure: Balance utilities with semiconductors
-- To hedge market uncertainty: Use this factor to adjust growth/defensive mix
-
----
-
-#### PC3: Energy vs. Stable Tech (5.13%)
-
-**Positive Contributors (Energy):**
-
-| Stock | Loading | Company |
-|-------|---------|---------|
-| XOM | +0.135 | Exxon Mobil |
-| COP | +0.133 | ConocoPhillips |
-| SLB | +0.130 | Schlumberger |
-| DVN | +0.130 | Devon Energy |
-| HAL | +0.129 | Halliburton |
-
-**Negative Contributors (Quality Tech/Healthcare):**
-
-| Stock | Loading | Company |
-|-------|---------|---------|
-| ZTS | -0.092 | Zoetis |
-| IDXX | -0.082 | IDEXX Laboratories |
-| TYL | -0.080 | Tyler Technologies |
-| MSFT | -0.077 | Microsoft |
-| ADBE | -0.073 | Adobe |
-
-**Interpretation:**
-- **Commodity exposure vs. quality growth**
-- Positive side: Oil & gas extraction/services (sensitive to oil prices)
-- Negative side: Stable, recurring-revenue business models
-- Captures **oil price sensitivity** as distinct risk factor
-
-**Portfolio Strategy:**
-- To hedge PC3: Combine energy stocks with stable tech
-- Energy moves independently based on commodity prices, not market sentiment
-
----
-
-### Time Series Analysis
-
-![PCA Time Series](results/pca_time_series.png)
-
-**PC1 (Market Factor - 30.2%):**
-- **Major crashes:** Mid-2022 drop (~-40), early 2025 crash (~-40)
-- **Bull period:** Persistent positive territory throughout 2023-2024
-- **High volatility:** Multiple swings between -20 and +20
-- Captures **broad market rallies and selloffs**—magnitude shows movement intensity
-
-**PC2 (Sector Rotation - 6.4%):**
-- **Lower volatility** than PC1 (range: -15 to +20)
-- **Sharp positive spike** (~+19) in mid-2024 (risk-off, utilities favored)
-- **Mean-reverting:** Oscillates around zero
-- **Several negative dips** (-10 to -15) during risk-on periods (semiconductors favored)
-- Shows **alternating risk regimes**
-
-**PC3 (Energy Factor - 5.1%):**
-- **Massive spike** (+30) in early 2022 (oil/energy shock from Russia-Ukraine war)
-- **Recent stability** near zero (2024-2025)—energy volatility subsided
-- **Event-driven:** Responds to geopolitical/commodity shocks
-
----
-
-### Dimensionality Reduction Summary
-
-**Optimal Configuration (95% Variance Threshold):**
-
-```
-Original dimensions:    491 stocks
-Reduced dimensions:     143 components
-Dimensionality reduction: 70.9%
-Variance retained:      95.01%
-```
-
-**Alternative Configurations:**
-
-| Variance Target | Components Required | Reduction |
-|----------------|---------------------|-----------|
-| 90% | 105 | 78.6% |
-| 95% | 143 | 70.9% |
-| 99% | 201 | 59.1% |
-
-**Top 10 Component Breakdown:**
-
-| PC | Individual | Cumulative |
-|----|-----------|------------|
-| 1 | 30.24% | 30.24% |
-| 2 | 6.39% | 36.63% |
-| 3 | 5.13% | 41.76% |
-| 4 | 2.42% | 44.19% |
-| 5 | 2.01% | 46.20% |
-| 6 | 1.92% | 48.12% |
-| 7 | 1.67% | 49.78% |
-| 8 | 1.39% | 51.17% |
-| 9 | 1.34% | 52.52% |
-| 10 | 1.13% | 53.65% |
-
----
-
-### Business Value
+### Business Value of Findings
 
 **Key Results:**
 - **3.4× dimensionality reduction** while retaining 95% of information
@@ -502,6 +256,254 @@ The correlation structure makes PCA particularly effective for this dataset:
 - 10-20 components should explain 80%+ of total variance
 
 ---
+
+
+## PCA Results
+
+### Variance Explained
+
+PCA was fitted with 252 components. The analysis reveals a **dominant first component** capturing nearly one-third of total variance, followed by rapidly declining contributions from subsequent components.
+
+![Scree Plot](results/pca_scree_plot.png)
+
+**Top 3 Components:**
+- **PC1:** 30.24% (market factor)
+- **PC2:** 6.39% (sector rotation)  
+- **PC3:** 5.13% (energy exposure)
+
+**Key Observations:**
+- **Dominant first component:** PC1 explains 30.2% of variance—nearly one-third of all variation
+- **Rapid variance decay:** Steep decline after PC1 (30.2% → 6.4% → 5.1%)
+- **Top 3 components:** Together explain ~42% of total variance
+- **Long tail:** Remaining 249 components account for the other 58%, indicating diverse patterns
+
+---
+
+### Eigenvalue Analysis
+
+![Eigenvalue Distribution](results/eigenvalue_distribution.png)
+
+**Eigenvalue Statistics:**
+
+| Metric | Value |
+|--------|-------|
+| **Total eigenvalues** | 252 |
+| **Largest (λ₁)** | 149.09 |
+| **Smallest (λ₂₅₂)** | ~0 |
+| **Max/Min ratio** | 5.07 × 10³³ |
+
+**Top 10 Eigenvalues:**
+
+| Component | Eigenvalue | Variance Explained | Cumulative |
+|-----------|------------|-------------------|------------|
+| PC1 | 149.09 | 30.24% | 30.24% |
+| PC2 | 31.50 | 6.39% | 36.63% |
+| PC3 | 25.28 | 5.13% | 41.76% |
+| PC4 | 11.95 | 2.42% | 44.19% |
+| PC5 | 9.92 | 2.01% | 46.20% |
+| PC6 | 9.46 | 1.92% | 48.12% |
+| PC7 | 8.21 | 1.67% | 49.78% |
+| PC8 | 6.84 | 1.39% | 51.17% |
+| PC9 | 6.62 | 1.34% | 52.52% |
+| PC10 | 5.59 | 1.13% | 53.65% |
+
+**Key Insights:**
+- **Absolute dominance:** PC1's eigenvalue (149.09) is ~5× larger than PC2 (31.50)
+- **Extreme ratio:** Max/min ratio indicates near-zero variance in some dimensions (redundant features)
+- **Top 10 components:** Collectively explain ~54% of variance
+- **Even distribution:** After PC1, relatively consistent decay (1-6% each) suggests multiple independent patterns
+- **No clear elbow:** Continuous exponential decline without sudden plateau
+
+**Left panel (linear scale):** Shows absolute dominance of first eigenvalue  
+**Right panel (log scale):** Reveals continuous decay pattern across all components
+
+---
+
+### Component Loadings
+
+![Eigenvector Loadings](results/pca_eigenvector_loadings.png)
+
+**Pattern Analysis:**
+
+| Component | Pattern | Interpretation |
+|-----------|---------|----------------|
+| **PC1** (30.2%) | All positive loadings (~0.03-0.06) | Market factor—all stocks move together |
+| **PC2** (6.4%) | Mixed signs with clear extremes | Stock differentiation—contrasts between sectors |
+| **PC3** (5.1%) | Sparse with both signs | Independent contrast pattern—industry groups |
+
+**What This Means:**
+- **PC1** tells us: "The market went up or down"
+- **PC2 & PC3** tell us: "Which stocks outperformed vs. underperformed"
+- These contrasts reveal **diversification opportunities** within the market
+
+---
+
+### Factor Interpretation
+
+![Component Loadings - Top 20 Stocks](results/component_loadings_20stocks.png)
+*Heatmap showing how the 20 stocks with highest PC1 loadings contribute to the first 5 components*
+
+#### PC1: Market Factor (30.24%)
+
+**Top Contributors (All Positive):**
+
+| Stock | Sector | Loading | Interpretation |
+|-------|--------|---------|----------------|
+| BLK | Financials | 0.0680 | BlackRock (asset management) |
+| AMP | Financials | 0.0666 | Ameriprise (wealth management) |
+| DOV | Industrials | 0.0663 | Dover Corporation |
+| ITW | Industrials | 0.0650 | Illinois Tool Works |
+| MCO | Financials | 0.0633 | Moody's (credit ratings) |
+| GS | Financials | 0.0633 | Goldman Sachs |
+
+**Least Contributors (Still Positive):**
+
+| Stock | Sector | Loading |
+|-------|--------|---------|
+| CPB | Consumer Staples | 0.0157 |
+| MOH | Healthcare | 0.0156 |
+| UNH | Healthcare | 0.0148 |
+| DG | Consumer Discretionary | 0.0134 |
+| GIS | Consumer Staples | 0.0132 |
+
+**Interpretation:**
+- **Systematic market risk** captured by PC1 affects all stocks
+- **Cyclical/financial stocks** most sensitive to broad market movements
+- **Defensive sectors** (consumer staples, healthcare) least sensitive but still positive
+- **Cannot be diversified away** within S&P 500—represents unavoidable market beta
+
+---
+
+#### PC2: Sector Rotation (6.39%)
+
+**Positive Contributors (Utilities):**
+
+| Stock | Loading | Company |
+|-------|---------|---------|
+| ED | +0.134 | Consolidated Edison |
+| DUK | +0.131 | Duke Energy |
+| SO | +0.127 | Southern Company |
+| WEC | +0.125 | WEC Energy |
+| CMS | +0.122 | CMS Energy |
+
+**Negative Contributors (Semiconductors/Tech):**
+
+| Stock | Loading | Company |
+|-------|---------|---------|
+| LRCX | -0.083 | Lam Research |
+| KLAC | -0.081 | KLA Corporation |
+| AMAT | -0.080 | Applied Materials |
+| NVDA | -0.080 | Nvidia |
+| CDNS | -0.079 | Cadence Design |
+| CRWD | -0.075 | CrowdStrike |
+
+**Interpretation:**
+- **Classic defensive vs. growth rotation**
+- **Risk-off periods:** Utilities outperform (positive PC2), semiconductors lag
+- **Risk-on periods:** Tech/semiconductors rally (negative PC2), utilities lag
+- Represents **investor sentiment shifts** between safety and growth
+
+**Portfolio Strategy:**
+- To reduce PC2 exposure: Balance utilities with semiconductors
+- To hedge market uncertainty: Use this factor to adjust growth/defensive mix
+
+---
+
+#### PC3: Energy vs. Stable Tech (5.13%)
+
+**Positive Contributors (Energy):**
+
+| Stock | Loading | Company |
+|-------|---------|---------|
+| XOM | +0.135 | Exxon Mobil |
+| COP | +0.133 | ConocoPhillips |
+| SLB | +0.130 | Schlumberger |
+| DVN | +0.130 | Devon Energy |
+| HAL | +0.129 | Halliburton |
+
+**Negative Contributors (Quality Tech/Healthcare):**
+
+| Stock | Loading | Company |
+|-------|---------|---------|
+| ZTS | -0.092 | Zoetis |
+| IDXX | -0.082 | IDEXX Laboratories |
+| TYL | -0.080 | Tyler Technologies |
+| MSFT | -0.077 | Microsoft |
+| ADBE | -0.073 | Adobe |
+
+**Interpretation:**
+- **Commodity exposure vs. quality growth**
+- Positive side: Oil & gas extraction/services (sensitive to oil prices)
+- Negative side: Stable, recurring-revenue business models
+- Captures **oil price sensitivity** as distinct risk factor
+
+**Portfolio Strategy:**
+- To hedge PC3: Combine energy stocks with stable tech
+- Energy moves independently based on commodity prices, not market sentiment
+
+---
+
+### Time Series Analysis
+
+![PCA Time Series](results/pca_time_series.png)
+
+**PC1 (Market Factor - 30.2%):**
+- **Major crashes:** Mid-2022 drop (~-40), early 2025 crash (~-40)
+- **Bull period:** Persistent positive territory throughout 2023-2024
+- **High volatility:** Multiple swings between -20 and +20
+- Captures **broad market rallies and selloffs**—magnitude shows movement intensity
+
+**PC2 (Sector Rotation - 6.4%):**
+- **Lower volatility** than PC1 (range: -15 to +20)
+- **Sharp positive spike** (~+19) in mid-2024 (risk-off, utilities favored)
+- **Mean-reverting:** Oscillates around zero
+- **Several negative dips** (-10 to -15) during risk-on periods (semiconductors favored)
+- Shows **alternating risk regimes**
+
+**PC3 (Energy Factor - 5.1%):**
+- **Massive spike** (+30) in early 2022 (oil/energy shock from Russia-Ukraine war)
+- **Recent stability** near zero (2024-2025)—energy volatility subsided
+- **Event-driven:** Responds to geopolitical/commodity shocks
+
+---
+
+### Dimensionality Reduction Summary
+
+**Optimal Configuration (95% Variance Threshold):**
+
+```
+Original dimensions:    491 stocks
+Reduced dimensions:     143 components
+Dimensionality reduction: 70.9%
+Variance retained:      95.01%
+```
+
+**Alternative Configurations:**
+
+| Variance Target | Components Required | Reduction |
+|----------------|---------------------|-----------|
+| 90% | 105 | 78.6% |
+| 95% | 143 | 70.9% |
+| 99% | 201 | 59.1% |
+
+**Top 10 Component Breakdown:**
+
+| PC | Individual | Cumulative |
+|----|-----------|------------|
+| 1 | 30.24% | 30.24% |
+| 2 | 6.39% | 36.63% |
+| 3 | 5.13% | 41.76% |
+| 4 | 2.42% | 44.19% |
+| 5 | 2.01% | 46.20% |
+| 6 | 1.92% | 48.12% |
+| 7 | 1.67% | 49.78% |
+| 8 | 1.39% | 51.17% |
+| 9 | 1.34% | 52.52% |
+| 10 | 1.13% | 53.65% |
+
+---
+
+
 
 ## Installation
 
