@@ -188,7 +188,7 @@ pca-portfolio-analysis/
 
 ### Market Dynamics Over Time
 
-![Mean Weekly Return & Cross-sectional Volatility](images/weekly_return.png)
+![Mean Weekly Return & Cross-sectional Volatility](results/weekly_return.png)
 
 **Key Observations:**
 - **Cross-sectional volatility** (purple) remains stable around 3-5%
@@ -205,10 +205,10 @@ The correlation analysis reveals strong co-movement patterns among S&P 500 stock
 
 #### Correlation Matrices
 
-![Correlation Matrix - All Stocks](images/corr_matrix_allstocks.png)
+![Correlation Matrix All Stocks](results/corr_matrix_allstocks.png)
 *Full correlation matrix showing sector clustering patterns*
 
-![Correlation Matrix - 50 Stocks Sample](images/corr_matrix_50stocks.png)
+![Correlation Matrix 50 Stocks Sample](results/corr_matrix_50stocks.png)
 *Detailed view: Block-diagonal structure indicates sector groupings*
 
 **Key Insights:**
@@ -219,7 +219,7 @@ The correlation analysis reveals strong co-movement patterns among S&P 500 stock
 
 #### Distribution of Pairwise Correlations
 
-![Distribution of Correlations](images/distribution_of_corr.png)
+![Distribution of Correlations](results/distribution_of_corr.png)
 
 **Statistical Summary:**
 
