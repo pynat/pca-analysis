@@ -73,24 +73,23 @@ Dimensionality Reduction
 **1. Original Data Space**
 - 491-dimensional space (one dimension per stock)
 - Each trading day = one point in this high-dimensional space
-- 1,216 points scattered in 491 dimensions
+- 252 points scattered in 491 dimensions
 
 **2. Covariance Matrix**
 - Size: 491 × 491
 - Measures how each pair of stocks co-varies
 - Properties: Symmetric, positive semi-definite
-- Diagonal elements: Individual stock variances
-- Off-diagonal elements: Covariances between stocks
+- Diagonal: Individual stock variances | Off-diagonal: Pairwise covariances
 
 **3. Eigenvalue Decomposition**
 - **Eigenvalues:** Amount of variance captured in each direction
 - **Eigenvectors:** Directions of maximum variance
 - Sorted by eigenvalue magnitude (largest first)
-- Largest eigenvalue → PC1 (most important direction, often market factor)
+- Largest eigenvalue → PC1 (most important direction, typically market factor)
 
 **4. Principal Components**
 - New coordinate system aligned with variance structure
-- **PC1:** Direction of maximum variance (typically market factor)
+- **PC1:** Direction of maximum variance (market factor)
 - **PC2:** Second most variance (orthogonal to PC1)
 - **PC3, PC4, ...:** Progressively less variance, all mutually orthogonal
 
@@ -154,28 +153,72 @@ pca-portfolio-analysis/
 
 ### Market Dynamics Over Time
 
-![Mean Weekly Return & Cross-sectional Volatility](images/weekly_return_volatility.png)
+![Mean Weekly Return & Cross-sectional Volatility](images/weekly_return.png)
 
 **Key Observations:**
-- **Cross-sectional volatility** (purple) remains relatively stable around 3-5%
+- **Cross-sectional volatility** (purple) remains stable around 3-5%
 - **Mean weekly returns** (pink) fluctuate around zero with high amplitude
 - **Volatility spikes** visible in early 2022 and late 2025 (macro events)
 - **Regime shifts** apparent: 2022 bear market shows increased dispersion
-- Market exhibits both systematic movements (visible in mean) and idiosyncratic variation (cross-sectional volatility)
+- Market exhibits both systematic movements (mean) and idiosyncratic variation (cross-sectional volatility)
+
+---
 
 ### Correlation Structure
-The correlation analysis reveals strong co-movement patterns among S&P 500 stocks:
+
+The correlation analysis reveals strong co-movement patterns among S&P 500 stocks, validating the application of PCA for dimensionality reduction.
+
+#### Correlation Matrices
 
 ![Correlation Matrix - All Stocks](images/corr_matrix_allstocks.png)
+*Full correlation matrix showing sector clustering patterns*
 
 ![Correlation Matrix - 50 Stocks Sample](images/corr_matrix_50stocks.png)
+*Detailed view: Block-diagonal structure indicates sector groupings*
+
+**Key Insights:**
+- **Sector clustering:** Stocks within the same industry show higher correlations (darker blocks)
+- **Market co-movement:** Light purple baseline confirms broad systematic risk
+- **Diversification opportunities:** Low-correlation pairs (lighter areas) signal hedging potential
+- **Risk concentration:** High-correlation clusters highlight vulnerability during market stress
+
+#### Distribution of Pairwise Correlations
 
 ![Distribution of Correlations](images/distribution_of_corr.png)
 
-**Observations:**
-- Strong positive correlations exist between most stocks
-- Sector-based clustering is visible
-- High correlation justifies PCA application
+**Statistical Summary:**
+
+| Metric | Value | Interpretation |
+|--------|-------|----------------|
+| **Mean** | 0.284 | Moderate positive correlation indicates systematic market risk |
+| **Median** | 0.280 | Close to mean → symmetric distribution |
+| **Std Dev** | 0.140 | Sufficient variation for strategic pair selection |
+| **Pairs >0.7** | 643 (0.5%) | Very few extreme correlations → diversification is effective |
+
+**Key Takeaways:**
+- **Moderate co-movement:** On average, two random stocks move together 28.4%
+- **Stable structure:** Standard deviation of 0.14 indicates consistent correlation patterns
+- **Normal distribution:** Predictable patterns enable reliable risk modeling
+- **Diversification viable:** Only 0.5% of pairs are highly correlated (>0.7)
+
+---
+
+### Why PCA for This Data?
+
+The correlation structure makes PCA particularly effective for this dataset:
+
+**Rationale:**
+1. **Dimensionality reduction:** Compress 491 stocks → few principal components while preserving variance
+2. **Moderate correlation (0.284):** Indicates co-movement but not redundancy—ideal for PCA
+3. **Factor identification:** Extract common drivers (market factor, sector trends) from return patterns
+4. **Noise separation:** Distinguish systematic risk factors from stock-specific noise
+5. **Computational efficiency:** Enable faster portfolio optimization on reduced feature space
+6. **Stable structure:** Consistent correlations (σ=0.14) yield robust principal components
+
+**Expected Outcomes:**
+- PC1 will likely capture broad market movements (~30-40% variance)
+- Subsequent PCs will represent sector-specific or style factors
+- 10-20 components should explain 80%+ of total variance
 
 ---
 
