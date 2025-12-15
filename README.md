@@ -29,18 +29,6 @@ This project demonstrates how to apply **Principal Component Analysis (PCA)** to
 - **Number of stocks:** 491 S&P 500 companies
 - **Number of observations:** 252 trading weeks
 
-### Data Collection Method
-```python
-# S&P 500 company list scraped from Wikipedia
-url = "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
-headers = {"User-Agent": "Mozilla/5.0"}
-response = requests.get(url, headers=headers)
-sp500_table = pd.read_html(StringIO(response.text))[0]
-
-# Historical price data downloaded via yfinance
-data = yf.download(tickers, start=start_date, end=end_date)
-```
-
 ---
 
 ## What is PCA?
@@ -125,17 +113,17 @@ Dimensionality Reduction
 
 ```
 pca-portfolio-analysis/
-├── data/                           # Raw and processed data files
-├── notebooks/                      # Jupyter notebooks
-│   ├── 01_data_collection.ipynb   # S&P 500 data retrieval
+├── data/                              # Raw and processed data files
+├── notebooks/                         # Jupyter notebooks
+│   ├── 01_data_collection.ipynb       # S&P 500 data retrieval
 │   ├── 02_exploratory_analysis.ipynb  # EDA and correlation analysis
-│   └── 03_pca_analysis.ipynb      # PCA implementation and results
-├── results/                        # Output files
-│   └── figures/                    # Generated visualizations
-├── images/                         # Images for README
-├── requirements.txt                # Python dependencies
-├── .gitignore                      # Git ignore rules
-└── README.md                       # This file
+│   └── 03_pca_analysis.ipynb          # PCA implementation and results
+├── results/                           # Output files
+│   └── figures/                       # Generated visualizations
+├── images/                            # Images for README
+├── requirements.txt                   # Python dependencies
+├── .gitignore                         # Git ignore rules
+└── README.md                          # This file
 ```
 
 ---
@@ -153,7 +141,7 @@ pca-portfolio-analysis/
 
 ### Market Dynamics Over Time
 
-![Mean Weekly Return & Cross-sectional Volatility](images/weekly_return.png)
+![Mean Weekly Return & Cross-sectional Volatility](results/weekly_return.png)
 
 **Key Observations:**
 - **Cross-sectional volatility** (purple) remains stable around 3-5%
@@ -170,10 +158,10 @@ The correlation analysis reveals strong co-movement patterns among S&P 500 stock
 
 #### Correlation Matrices
 
-![Correlation Matrix - All Stocks](images/corr_matrix_allstocks.png)
+![Correlation Matrix - All Stocks](results/corr_matrix_allstocks.png)
 *Full correlation matrix showing sector clustering patterns*
 
-![Correlation Matrix - 50 Stocks Sample](images/corr_matrix_50stocks.png)
+![Correlation Matrix - 50 Stocks Sample](results/corr_matrix_50stocks.png)
 *Detailed view: Block-diagonal structure indicates sector groupings*
 
 **Key Insights:**
@@ -184,7 +172,7 @@ The correlation analysis reveals strong co-movement patterns among S&P 500 stock
 
 #### Distribution of Pairwise Correlations
 
-![Distribution of Correlations](images/distribution_of_corr.png)
+![Distribution of Correlations](results/distribution_of_corr.png)
 
 **Statistical Summary:**
 
