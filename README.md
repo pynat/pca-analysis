@@ -3,6 +3,7 @@
 This project demonstrates how to apply **Principal Component Analysis (PCA)** to S&P 500 stock returns to extract the main factors driving market movements and reduce dimensionality for portfolio analysis.
 
 ---
+
 ### Business Value of Findings
 
 **Key Results:**
@@ -281,7 +282,7 @@ PCA was fitted with 252 components. The analysis reveals a **dominant first comp
 
 ### Eigenvalue Analysis
 
-![Eigenvalue Distribution](results/eigenvalue_distribution.png)
+![Eigenvalue Distribution](results/pca_eigenvalue_distribution.png)
 
 **Eigenvalue Statistics:**
 
