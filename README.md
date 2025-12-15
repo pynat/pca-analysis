@@ -245,7 +245,7 @@ The correlation structure makes PCA particularly effective for this dataset:
 
 **Rationale:**
 1. **Dimensionality reduction:** Compress 491 stocks → few principal components while preserving variance
-2. **Moderate correlation (0.284):** Indicates co-movement but not redundancy—ideal for PCA
+2. **Moderate correlation (0.284):** Indicates co-movement but not redundancy, ideal for PCA
 3. **Factor identification:** Extract common drivers (market factor, sector trends) from return patterns
 4. **Noise separation:** Distinguish systematic risk factors from stock-specific noise
 5. **Computational efficiency:** Enable faster portfolio optimization on reduced feature space
@@ -273,7 +273,7 @@ PCA was fitted with 252 components. The analysis reveals a **dominant first comp
 - **PC3:** 5.13% (energy exposure)
 
 **Key Observations:**
-- **Dominant first component:** PC1 explains 30.2% of variance—nearly one-third of all variation
+- **Dominant first component:** PC1 explains 30.2% of varianc, —nearly one-third of all variation
 - **Rapid variance decay:** Steep decline after PC1 (30.2% → 6.4% → 5.1%)
 - **Top 3 components:** Together explain ~42% of total variance
 - **Long tail:** Remaining 249 components account for the other 58%, indicating diverse patterns
@@ -371,7 +371,7 @@ PCA was fitted with 252 components. The analysis reveals a **dominant first comp
 - **Systematic market risk** captured by PC1 affects all stocks
 - **Cyclical/financial stocks** most sensitive to broad market movements
 - **Defensive sectors** (consumer staples, healthcare) least sensitive but still positive
-- **Cannot be diversified away** within S&P 500—represents unavoidable market beta
+- **Cannot be diversified away** within S&P 500 represents unavoidable market beta
 
 ---
 
@@ -449,10 +449,10 @@ PCA was fitted with 252 components. The analysis reveals a **dominant first comp
 ![PCA Time Series](results/pca_time_series.png)
 
 **PC1 (Market Factor - 30.2%):**
-- **Major crashes:** Mid-2022 drop (~-40), early 2025 crash (~-40)
+- **Major crashes:** Mid-2022 drop (~40), early 2025 crash (~40)
 - **Bull period:** Persistent positive territory throughout 2023-2024
 - **High volatility:** Multiple swings between -20 and +20
-- Captures **broad market rallies and selloffs**—magnitude shows movement intensity
+- Captures **broad market rallies and selloffs** magnitude shows movement intensity
 
 **PC2 (Sector Rotation - 6.4%):**
 - **Lower volatility** than PC1 (range: -15 to +20)
@@ -463,7 +463,7 @@ PCA was fitted with 252 components. The analysis reveals a **dominant first comp
 
 **PC3 (Energy Factor - 5.1%):**
 - **Massive spike** (+30) in early 2022 (oil/energy shock from Russia-Ukraine war)
-- **Recent stability** near zero (2024-2025)—energy volatility subsided
+- **Recent stability** near zero (2024-2025) energy volatility subsided
 - **Event-driven:** Responds to geopolitical/commodity shocks
 
 ---
