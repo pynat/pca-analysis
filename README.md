@@ -65,18 +65,6 @@ This project demonstrates how to apply **Principal Component Analysis (PCA)** to
 - **Data quality:** No missing values
 - **Mean weekly return:** 0.26%
 
-### Data Collection Method
-```python
-# S&P 500 company list scraped from Wikipedia
-url = "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
-headers = {"User-Agent": "Mozilla/5.0"}
-response = requests.get(url, headers=headers)
-sp500_table = pd.read_html(StringIO(response.text))[0]
-
-# Historical price data downloaded via yfinance
-data = yf.download(tickers, start=start_date, end=end_date)
-```
-
 ---
 
 ## What is PCA?
