@@ -65,86 +65,7 @@ This project demonstrates how to apply **Principal Component Analysis (PCA)** to
 - **Data quality:** No missing values
 - **Mean weekly return:** 0.26%
 
----
-
-## What is PCA?
-
-Principal Component Analysis (PCA) constructs a **new basis of a vector space** consisting of **linearly independent, orthogonal vectors**, such that with as few basis vectors as possible, the **maximum variance (information) of the data** is preserved.
-
-- **Original basis:** The original variables (stock returns)
-- **New basis:** Principal components (eigenvectors)
-
----
-
-## Mathematical Foundation
-
-### Conceptual Pipeline
-
-```
-Raw Data 
-  ↓
-Covariance Matrix 
-  ↓
-Eigenvalue Decomposition 
-  ↓
-Principal Components (ranked by explained variance)
-  ↓
-Dimensionality Reduction
-```
-
-### Geometric Interpretation
-
-**1. Original Data Space**
-- 491-dimensional space (one dimension per stock)
-- Each trading day = one point in this high-dimensional space
-- 252 points scattered in 491 dimensions
-
-**2. Covariance Matrix**
-- Size: 491 × 491
-- Measures how each pair of stocks co-varies
-- Properties: Symmetric, positive semi-definite
-- Diagonal: Individual stock variances | Off-diagonal: Pairwise covariances
-
-**3. Eigenvalue Decomposition**
-- **Eigenvalues:** Amount of variance captured in each direction
-- **Eigenvectors:** Directions of maximum variance
-- Sorted by eigenvalue magnitude (largest first)
-- Largest eigenvalue → PC1 (most important direction, typically market factor)
-
-**4. Principal Components**
-- New coordinate system aligned with variance structure
-- **PC1:** Direction of maximum variance (market factor)
-- **PC2:** Second most variance (orthogonal to PC1)
-- **PC3, PC4, ...:** Progressively less variance, all mutually orthogonal
-
-**5. Dimensionality Reduction**
-- Retain only top K components
-- Discard components with small eigenvalues (noise)
-- Result: 491 dimensions → K dimensions
-- Trade-off: Simplicity vs. information preservation
-
-**6. Orthogonality Property**
-- All principal components are uncorrelated by construction
-- Eigenvectors are mathematically orthogonal
-- Result: Independent risk factors for portfolio analysis
-
----
-
-## When to Use PCA
-
-### PCA Works Well When:
-- Strong correlations exist between variables
-- Variance is concentrated in a few directions
-- Data has underlying linear structure
-
-### PCA Works Poorly When:
-- All variables are equally important
-- No clear correlation structure exists
-- Information exists in non-linear relationships
-- Data is sparse or has many zeros
-
----
-
+----
 ## Project Structure
 
 ```
@@ -526,6 +447,86 @@ jupyter notebook
 2. **02_exploratory_analysis.ipynb** - Explore returns and correlations
 3. **03_pca_analysis.ipynb** - Apply PCA and interpret results
 
+
+---
+## Additional
+---
+
+## What is PCA?
+
+Principal Component Analysis (PCA) constructs a **new basis of a vector space** consisting of **linearly independent, orthogonal vectors**, such that with as few basis vectors as possible, the **maximum variance (information) of the data** is preserved.
+
+- **Original basis:** The original variables (stock returns)
+- **New basis:** Principal components (eigenvectors)
+
+---
+
+## Mathematical Foundation
+
+### Conceptual Pipeline
+
+```
+Raw Data 
+  ↓
+Covariance Matrix 
+  ↓
+Eigenvalue Decomposition 
+  ↓
+Principal Components (ranked by explained variance)
+  ↓
+Dimensionality Reduction
+```
+
+### Geometric Interpretation
+
+**1. Original Data Space**
+- 491-dimensional space (one dimension per stock)
+- Each trading day = one point in this high-dimensional space
+- 252 points scattered in 491 dimensions
+
+**2. Covariance Matrix**
+- Size: 491 × 491
+- Measures how each pair of stocks co-varies
+- Properties: Symmetric, positive semi-definite
+- Diagonal: Individual stock variances | Off-diagonal: Pairwise covariances
+
+**3. Eigenvalue Decomposition**
+- **Eigenvalues:** Amount of variance captured in each direction
+- **Eigenvectors:** Directions of maximum variance
+- Sorted by eigenvalue magnitude (largest first)
+- Largest eigenvalue → PC1 (most important direction, typically market factor)
+
+**4. Principal Components**
+- New coordinate system aligned with variance structure
+- **PC1:** Direction of maximum variance (market factor)
+- **PC2:** Second most variance (orthogonal to PC1)
+- **PC3, PC4, ...:** Progressively less variance, all mutually orthogonal
+
+**5. Dimensionality Reduction**
+- Retain only top K components
+- Discard components with small eigenvalues (noise)
+- Result: 491 dimensions → K dimensions
+- Trade-off: Simplicity vs. information preservation
+
+**6. Orthogonality Property**
+- All principal components are uncorrelated by construction
+- Eigenvectors are mathematically orthogonal
+- Result: Independent risk factors for portfolio analysis
+
+---
+
+## When to Use PCA
+
+### PCA Works Well When:
+- Strong correlations exist between variables
+- Variance is concentrated in a few directions
+- Data has underlying linear structure
+
+### PCA Works Poorly When:
+- All variables are equally important
+- No clear correlation structure exists
+- Information exists in non-linear relationships
+- Data is sparse or has many zeros
 
 ---
 

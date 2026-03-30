@@ -1,0 +1,5 @@
+pair,stock_a,stock_b,total_pnl,ann_return_pct,sharpe,max_drawdown,n_trades
+ETR_PPL,ETR,PPL,2124.72,5.5,1.081,-309.04,9
+ADI_APH,ADI,APH,3033.0,7.89,1.056,-372.06,11
+WEC_XEL,WEC,XEL,1040.53,2.69,1.041,-229.44,9
+KDP_PM,KDP,PM,1961.8,5.18,0.85,-616.05,10
