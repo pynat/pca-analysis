@@ -45,6 +45,7 @@ This project demonstrates how to apply **Principal Component Analysis (PCA)** to
 - [When to Use PCA](#when-to-use-pca)
 - [Project Structure](#project-structure)
 - [Key Findings](#key-findings)
+- [Evaluating Pairs Trading Strategy](#pairs-trading-strategy)
 - [Installation](#installation)
 - [Usage](#usage)
 
@@ -182,7 +183,7 @@ PCA was fitted with 252 components. The analysis reveals a **dominant first comp
 - **PC3:** 5.13% (energy exposure)
 
 **Key Observations:**
-- **Dominant first component:** PC1 explains 30.2% of varianc, —nearly one-third of all variation
+- **Dominant first component:** PC1 explains 30.2% of variance, nearly one-third of all variation
 - **Rapid variance decay:** Steep decline after PC1 (30.2% → 6.4% → 5.1%)
 - **Top 3 components:** Together explain ~42% of total variance
 - **Long tail:** Remaining 249 components account for the other 58%, indicating diverse patterns
@@ -237,9 +238,9 @@ PCA was fitted with 252 components. The analysis reveals a **dominant first comp
 
 | Component | Pattern | Interpretation |
 |-----------|---------|----------------|
-| **PC1** (30.2%) | All positive loadings (~0.03-0.06) | Market factor—all stocks move together |
-| **PC2** (6.4%) | Mixed signs with clear extremes | Stock differentiation—contrasts between sectors |
-| **PC3** (5.1%) | Sparse with both signs | Independent contrast pattern—industry groups |
+| **PC1** (30.2%) | All positive loadings (~0.03-0.06) | Market factor, all stocks move together |
+| **PC2** (6.4%) | Mixed signs with clear extremes | Stock differentiation, contrasts between sectors |
+| **PC3** (5.1%) | Sparse with both signs | Independent contrast pattern, industry groups |
 
 **What This Means:**
 - **PC1** tells us: "The market went up or down"
@@ -414,6 +415,99 @@ Variance retained:      95.01%
 ---
 
 
+## Pairs Trading Strategy
+
+A statistical arbitrage pipeline built on top of the PCA loadings, selecting and trading mean-reverting stock pairs. This pipeline constitutes an **exploratory, in-sample signal study** a first step before rigorous out-of-sample validation.
+
+### Pipeline Overview
+
+PCA Loadings
+↓
+Loading Distance → Top 300 Pair Candidates
+↓
+Sector Filter → 86 Same-Sector Pairs
+↓
+Engle-Granger Cointegration Test (p < 0.05)
+↓
+2 Cointegrated Pairs (in-sample)
+↓
+Spread & Z-Score → Signals → Walk-Forward Backtest
+
+### Pair Candidate Selection
+
+- Stocks projected into 2D factor space (PC1 & PC2).
+- Pairwise Euclidean distances computed across all 480 stocks.
+- Top 300 closest pairs retained as candidates, small distance = shared dominant risk factors.
+- Cross-sector pairs dropped (PCA distance is sector-agnostic; cross-sector cointegration is likely spurious).
+- Result: **86 same-sector pairs** for cointegration testing.
+
+### Cointegration Testing (In-Sample)
+
+- Daily prices resampled to weekly; log-transformed for spread stationarity.
+- Engle-Granger test applied to all 86 pairs (minimum 60 weeks of shared history required).
+- Significance threshold: p < 0.05. Note: 86 simultaneous tests at α = 0.05 imply ~4 expected false positives under the full null, results should be interpreted accordingly.
+- Result: **2 cointegrated pairs.**
+
+| Pair | Sector | p-value |
+|------|--------|---------|
+| EXPD / J | Industrials | 0.0175 |
+| KHC / KR | Consumer Staples | 0.0367 |
+
+KHC/KR is economically intuitive (shared food-price factor exposure). EXPD/J plausible via shared rate sensitivity.
+
+### Spread & Signal Construction
+
+- **Hedge ratio** estimated via OLS regression of log(A) on log(B).
+- **Spread** = log(A) − β · log(B)
+- **Z-score** computed on a rolling 52-week window.
+
+| Condition | Action | Signal |
+|-----------|--------|--------|
+| z > +2.0 | Short spread (short A, long B) | −1 |
+| z < −2.0 | Long spread (long A, short B) | +1 |
+| \|z\| < 0.5 | Close position | 0 |
+
+Positions held via forward-fill until exit threshold is crossed.
+
+| Pair | Time in Position |
+|------|-----------------|
+| KHC / KR | 20.7% |
+| EXPD / J | 38.4% |
+
+KHC/KR falls within the target range of 15–30% for z-entry = 2.0. EXPD/J is elevated, suggesting noisier mean-reversion.
+
+### Walk-Forward Backtest (Out-of-Sample)
+
+Pipeline refitted independently on each 2-year training window; signals evaluated on a strictly unseen 1-year test window. Pair selection and cointegration testing are repeated per window, no information from the in-sample study carries over.
+
+| Window | Pairs | Portfolio PnL | Sharpe |
+|--------|-------|--------------|--------|
+| 2023-02 | 20 | −$470 | −0.11 |
+| 2023-08 | 21 | −$11,795 | −2.15 |
+| 2024-02 | 30 | +$6,143 | +1.18 |
+| 2024-08 | 28 | −$270 | −0.04 |
+
+**Aggregate (4 windows, $10k/pair):**
+
+| Metric | Value |
+|--------|-------|
+| Total PnL | −$6,391 |
+| Annualised Return | −0.64% |
+| Sharpe Ratio | −0.29 |
+| Max Drawdown | −$10,362 |
+
+### Findings & Next Steps
+
+OOS performance is negative across all windows, consistent with a momentum-dominated regime (2023–2025) structurally unfavorable to mean-reversion strategies. The single profitable window (2024-02) coincides with a brief period of elevated cross-sectional dispersion, confirming regime dependency rather than strategy edge.
+
+This is a known limitation of static pairs trading frameworks and motivates the following extensions, addressed in a subsequent project:
+
+- **Dynamic hedge ratios** via Kalman Filter, OLS beta is fixed at training time; Kalman tracks the relationship continuously
+- **Regime detection** via Hidden Markov Model, condition pair selection and execution on mean-reversion vs. momentum regimes
+- **ML-based spread prediction** via LSTM or Transformer, replace static z-score thresholds with learned entry/exit signals
+- **Higher frequency execution**, weekly rebalancing is too slow; mean-reversion signal decay occurs within days, not weeks
+
+---
 
 ## Installation
 
