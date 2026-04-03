@@ -1,6 +1,8 @@
 # PCA Portfolio Analysis
 
-This project demonstrates how to apply **Principal Component Analysis (PCA)** to S&P 500 stock returns to extract the main factors driving market movements and reduce dimensionality for portfolio analysis.
+This project demonstrates how to apply **Principal Component Analysis (PCA)** to S&P 500 stock returns to extract the main factors driving market movements and reduce dimensionality for portfolio analysis.   
+     
+The project further explores a PCA-guided pairs trading strategy, serving as a first empirical investigation into statistical arbitrage signal construction.
 
 ---
 
@@ -476,6 +478,8 @@ Positions held via forward-fill until exit threshold is crossed.
 
 KHC/KR falls within the target range of 15–30% for z-entry = 2.0. EXPD/J is elevated, suggesting noisier mean-reversion.
 
+![In-Sample-Results](results/pairs_backtest.png)
+
 ### Walk-Forward Backtest (Out-of-Sample)
 
 Pipeline refitted independently on each 2-year training window; signals evaluated on a strictly unseen 1-year test window. Pair selection and cointegration testing are repeated per window, no information from the in-sample study carries over.
@@ -495,6 +499,8 @@ Pipeline refitted independently on each 2-year training window; signals evaluate
 | Annualised Return | −0.64% |
 | Sharpe Ratio | −0.29 |
 | Max Drawdown | −$10,362 |
+
+![Walk-Forward-Results](results/pairs_walkforward.png)
 
 ### Findings & Next Steps
 
