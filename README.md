@@ -42,12 +42,12 @@ The project further explores a PCA-guided pairs trading strategy, serving as a f
 ## Table of Contents
 
 - [Dataset](#dataset)
-- [What is PCA?](#what-is-pca)
-- [Mathematical Foundation](#mathematical-foundation)
-- [When to Use PCA](#when-to-use-pca)
 - [Project Structure](#project-structure)
 - [Key Findings](#key-findings)
-- [Evaluating Pairs Trading Strategy](#pairs-trading-strategy)
+- [PCA Results](#pca-results)
+- [Pairs Trading Strategy](#pairs-trading-strategy)
+
+- [Additional Information PCA](#additional-information-pca)
 - [Installation](#installation)
 - [Usage](#usage)
 
@@ -549,10 +549,7 @@ jupyter notebook
 
 
 ---
-## Additional
----
-
-## What is PCA?
+## Additional Information PCA
 
 Principal Component Analysis (PCA) constructs a **new basis of a vector space** consisting of **linearly independent, orthogonal vectors**, such that with as few basis vectors as possible, the **maximum variance (information) of the data** is preserved.
 
@@ -561,7 +558,7 @@ Principal Component Analysis (PCA) constructs a **new basis of a vector space** 
 
 ---
 
-## Mathematical Foundation
+### Mathematical Foundation
 
 ### Conceptual Pipeline
 
@@ -614,8 +611,6 @@ Dimensionality Reduction
 - Result: Independent risk factors for portfolio analysis
 
 ---
-
-## When to Use PCA
 
 ### PCA Works Well When:
 - Strong correlations exist between variables
