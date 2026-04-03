@@ -422,17 +422,17 @@ A statistical arbitrage pipeline built on top of the PCA loadings, selecting and
 
 ### Pipeline Overview
 
-PCA Loadings
-↓
-Loading Distance → Top 300 Pair Candidates
-↓
-Sector Filter → 86 Same-Sector Pairs
-↓
-Engle-Granger Cointegration Test (p < 0.05)
-↓
-2 Cointegrated Pairs (in-sample)
-↓
-Spread & Z-Score → Signals → Walk-Forward Backtest
+PCA Loadings    
+↓     
+Loading Distance → Top 300 Pair Candidates     
+↓     
+Sector Filter → 86 Same-Sector Pairs     
+↓      
+Engle-Granger Cointegration Test (p < 0.05)     
+↓     
+2 Cointegrated Pairs (in-sample)     
+↓     
+Spread & Z-Score → Signals → Walk-Forward Backtest     
 
 ### Pair Candidate Selection
 
