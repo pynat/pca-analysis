@@ -46,10 +46,9 @@ The project further explores a PCA-guided pairs trading strategy, serving as a f
 - [Key Findings](#key-findings)
 - [PCA Results](#pca-results)
 - [Pairs Trading Strategy](#pairs-trading-strategy)
-
-- [Additional Information PCA](#additional-information-pca)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Background: PCA](#background-pca)
 
 ---
 
@@ -549,7 +548,7 @@ jupyter notebook
 
 
 ---
-## Additional Information PCA
+## Background: PCA
 
 Principal Component Analysis (PCA) constructs a **new basis of a vector space** consisting of **linearly independent, orthogonal vectors**, such that with as few basis vectors as possible, the **maximum variance (information) of the data** is preserved.
 
